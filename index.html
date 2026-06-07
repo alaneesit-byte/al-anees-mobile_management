@@ -9,6 +9,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600;700&family=Barlow+Condensed:wght@500;600;700;800&display=swap" rel="stylesheet">
 <!-- QR Code library -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<!-- Supabase SDK -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 :root{
   --bd:#1a4f8a;--bm:#2471c8;--bl:#4a9fe8;--bp:#d6e9fa;
@@ -399,7 +401,7 @@ footer{background:var(--tx);color:rgba(255,255,255,.6);padding:64px 48px 32px}
       <div class="fc reveal"><div class="fi">🛡️</div><div class="ftt">Remote Security Controls</div><p class="ftx">Lock, wipe, or restrict any device instantly. Enforce PIN policies, encryption standards, and app restrictions across your entire fleet.</p></div>
       <div class="fc reveal"><div class="fi">📱</div><div class="ftt">App Management &amp; Deploy</div><p class="ftx">Push applications silently to any device or group. Manage app versions, revoke access, and maintain a curated enterprise app catalog.</p></div>
       <div class="fc reveal"><div class="fi">📊</div><div class="ftt">Fleet Analytics &amp; Reports</div><p class="ftx">Detailed compliance reports, battery health trends, and usage analytics. Export data for audit and governance needs.</p></div>
-      <div class="fc reveal"><div class="fi">📲</div><div class="ftt">QR Code Enrollment</div><p class="ftx">Enroll any Android or iOS device in seconds — just scan a QR code. Zero-touch provisioning for instant, policy-ready enrollment.</p></div>
+      <div class="fc reveal"><div class="fi">📲</div><div class="ftt">QR Code Enrollment</div><p class="ftx">Enroll any Android device in seconds — just scan a QR code. Zero-touch provisioning for instant, policy-ready enrollment.</p></div>
       <div class="fc reveal"><div class="fi">🔔</div><div class="ftt">Smart Alerting</div><p class="ftx">Automated alerts for low battery, offline devices, OS vulnerabilities, and compliance violations — delivered instantly.</p></div>
     </div>
   </div>
@@ -454,9 +456,9 @@ footer{background:var(--tx);color:rgba(255,255,255,.6);padding:64px 48px 32px}
           </div>
           <div>
             <div class="dth"><span>Device</span><span>Designation</span><span>Battery</span><span>OS</span><span>Status</span></div>
-            <div class="dtr"><span>Sales Unit 1</span><span style="opacity:.6">Sales</span><span>87%</span><span style="opacity:.6">iOS 17.4</span><span class="sp sp-on">● Online</span></div>
-            <div class="dtr"><span>IT Unit 7</span><span style="opacity:.6">IT</span><span>8%</span><span style="opacity:.6">Android 14</span><span class="sp sp-wn">⚠ Warning</span></div>
-            <div class="dtr"><span>Driver Unit 3</span><span style="opacity:.6">Driver</span><span>—</span><span style="opacity:.6">iOS 16.7</span><span class="sp sp-off">✕ Offline</span></div>
+            <div class="dtr"><span>Sales Unit 1</span><span style="opacity:.6">Sales</span><span>87%</span><span style="opacity:.6">Android 14</span><span class="sp sp-on">● Online</span></div>
+            <div class="dtr"><span>IT Unit 7</span><span style="opacity:.6">IT</span><span>8%</span><span style="opacity:.6">Android 13</span><span class="sp sp-wn">⚠ Warning</span></div>
+            <div class="dtr"><span>Driver Unit 3</span><span style="opacity:.6">Driver</span><span>—</span><span style="opacity:.6">Android 12</span><span class="sp sp-off">✕ Offline</span></div>
           </div>
         </div>
       </div>
@@ -669,7 +671,7 @@ footer{background:var(--tx);color:rgba(255,255,255,.6);padding:64px 48px 32px}
             <div class="aal err"><span class="aai">❌</span><div><div class="alt">DEV-007 offline &gt;2h</div><div class="alm">Field Unit 7 · 14:32 today</div></div></div>
             <div class="aal warn"><span class="aai">🔋</span><div><div class="alt">Low battery — DEV-012 (8%)</div><div class="alm">15:10 today</div></div></div>
             <div class="aal warn"><span class="aai">📍</span><div><div class="alt">Geofence breach — DEV-023</div><div class="alm">Exited Zone A · 15:44 today</div></div></div>
-            <div class="aal info"><span class="aai">🔄</span><div><div class="alt">OS update available — 18 devices</div><div class="alm">iOS 17.4.2 · Ready to push</div></div></div>
+            <div class="aal info"><span class="aai">🔄</span><div><div class="alt">OS update available — 18 devices</div><div class="alm">Android 14 QPR3 · Ready to push</div></div></div>
             <div class="aal warn"><span class="aai">🔓</span><div><div class="alt">Screen unlock failed 3× — DEV-018</div><div class="alm">12:55 today</div></div></div>
             <div class="aal info"><span class="aai">📲</span><div><div class="alt">QR Enrollment — 3 new devices today</div><div class="alm">DEV-028,029,030 · 10:15 today</div></div></div>
           </div>
@@ -747,25 +749,40 @@ footer{background:var(--tx);color:rgba(255,255,255,.6);padding:64px 48px 32px}
         <div class="aff full"><label>Device Name *</label><input type="text" id="afname" placeholder="e.g. Sales Unit 31"></div>
         <div class="aff"><label>Brand</label>
           <select id="afbrand" onchange="updateModels()">
-            <option value="Apple">Apple (iPhone)</option>
             <option value="Samsung">Samsung</option>
             <option value="OPPO">OPPO</option>
-            <option value="Xiaomi">Xiaomi / Mi</option>
+            <option value="Xiaomi">Xiaomi</option>
+            <option value="Mi">Mi</option>
+            <option value="POCO">POCO (Xiaomi)</option>
+            <option value="Redmi">Redmi (Xiaomi)</option>
             <option value="Motorola">Motorola</option>
             <option value="Huawei">Huawei</option>
+            <option value="Honor">Honor</option>
             <option value="OnePlus">OnePlus</option>
             <option value="Nokia">Nokia</option>
             <option value="Realme">Realme</option>
             <option value="Vivo">Vivo</option>
+            <option value="iQOO">iQOO (Vivo)</option>
             <option value="Google">Google Pixel</option>
-            <option value="Other">Other</option>
+            <option value="Sony">Sony Xperia</option>
+            <option value="LG">LG</option>
+            <option value="Asus">Asus</option>
+            <option value="ZTE">ZTE</option>
+            <option value="Infinix">Infinix</option>
+            <option value="Tecno">Tecno</option>
+            <option value="Itel">Itel</option>
+            <option value="Other">Other Android</option>
           </select>
         </div>
-        <div class="aff"><label>Model</label><select id="afmodel"></select></div>
+        <div class="aff"><label>Model <span id="model-count-lbl" style="font-weight:400;color:var(--bm);font-size:10px;text-transform:none;letter-spacing:0"></span></label><select id="afmodel"></select></div>
         <div class="aff"><label>OS Version</label>
           <select id="afos">
-            <option>iOS 17.4</option><option>iOS 17.3</option><option>iOS 16.7</option>
-            <option>Android 14</option><option>Android 13</option><option>Android 12</option><option>Android 11</option>
+            <option>Android 14</option>
+            <option>Android 13</option>
+            <option>Android 12</option>
+            <option>Android 11</option>
+            <option>Android 10</option>
+            <option>Android 9 (Pie)</option>
           </select>
         </div>
         <div class="aff"><label>Assigned Zone</label>
@@ -823,10 +840,10 @@ footer{background:var(--tx);color:rgba(255,255,255,.6);padding:64px 48px 32px}
           <div class="qr-url-disp" id="qrurl"></div>
           <div class="qr-steps">
             <div style="font-size:12px;font-weight:700;color:var(--bd);margin-bottom:10px;text-transform:uppercase;letter-spacing:.06em">How to enroll your device</div>
-            <div class="qr-step"><div class="qr-num">1</div><div class="qr-step-txt"><strong>Open camera</strong> on your iPhone or Android phone and point it at the QR code above.</div></div>
-            <div class="qr-step"><div class="qr-num">2</div><div class="qr-step-txt"><strong>Tap the notification</strong> that appears — it will open the AL ANEES enrollment page in your browser.</div></div>
-            <div class="qr-step"><div class="qr-num">3</div><div class="qr-step-txt"><strong>Confirm enrollment</strong> on the device. The device will appear in your dashboard within seconds.</div></div>
-            <div class="qr-step"><div class="qr-num">4</div><div class="qr-step-txt"><strong>QR expires in 10 minutes</strong> and is single-use for security. Generate a new one if needed.</div></div>
+            <div class="qr-step"><div class="qr-num">1</div><div class="qr-step-txt"><strong>Open camera app</strong> on the Android device and point it at the QR code above.</div></div>
+            <div class="qr-step"><div class="qr-num">2</div><div class="qr-step-txt"><strong>Tap the notification</strong> that appears — it opens the AL ANEES MDM enrollment page in Chrome.</div></div>
+            <div class="qr-step"><div class="qr-num">3</div><div class="qr-step-txt"><strong>Confirm enrollment</strong> on the device screen. Device registers in the dashboard within seconds.</div></div>
+            <div class="qr-step"><div class="qr-num">4</div><div class="qr-step-txt"><strong>QR expires in 10 minutes</strong> and is single-use. Generate a new one if expired.</div></div>
           </div>
           <div style="text-align:center;margin-top:14px">
             <button class="qr-sim-btn" onclick="simulateScan()" id="simBtn">📱 Simulate Device Scan (Demo)</button>
@@ -876,122 +893,482 @@ setTimeout(()=>{animCt('c1',10000,'+',2000);animCt('c2',99,'%',1800);animCt('c3'
 
 // ── Brand → Model map
 const BMODELS={
-  'Apple':['iPhone 15 Pro Max','iPhone 15 Pro','iPhone 15','iPhone 14 Pro Max','iPhone 14 Pro','iPhone 14','iPhone 13 Pro','iPhone 13','iPhone 12','iPhone SE'],
-  'Samsung':['Galaxy S24 Ultra','Galaxy S24+','Galaxy S24','Galaxy S23 Ultra','Galaxy S23','Galaxy A55','Galaxy A35','Galaxy A15','Galaxy M55','Galaxy Z Fold 5'],
-  'OPPO':['OPPO Find X7','OPPO Reno 11','OPPO Reno 10','OPPO A98','OPPO A78','OPPO A58'],
-  'Xiaomi':['Xiaomi 14 Ultra','Xiaomi 14','Xiaomi 13T Pro','Redmi Note 13 Pro','Redmi Note 13','Redmi 13C','Mi 11','POCO X6 Pro'],
-  'Motorola':['Moto G85','Moto G64','Moto G54','Edge 40 Pro','Edge 40','Moto G13'],
-  'Huawei':['Huawei P60 Pro','Huawei nova 11','Huawei Mate 60','Huawei Y9s'],
-  'OnePlus':['OnePlus 12','OnePlus 11','Nord 3','Nord CE 3','OnePlus 10 Pro'],
-  'Nokia':['Nokia G42','Nokia G22','Nokia C32','Nokia X30'],
-  'Realme':['Realme 12 Pro+','Realme 12','Realme C67','Realme GT 5'],
-  'Vivo':['Vivo X100 Pro','Vivo V30','Vivo Y200','Vivo T3'],
-  'Google':['Pixel 8 Pro','Pixel 8','Pixel 7a','Pixel 7','Pixel 6a'],
-  'Other':['Other Android','Custom Device','Industrial Tablet','Rugged Device']
+  'Samsung':[
+    'Galaxy S24 Ultra','Galaxy S24+','Galaxy S24','Galaxy S23 Ultra','Galaxy S23+','Galaxy S23',
+    'Galaxy S22 Ultra','Galaxy S22+','Galaxy S22','Galaxy S21 FE',
+    'Galaxy A55 5G','Galaxy A54 5G','Galaxy A35 5G','Galaxy A34 5G','Galaxy A25 5G','Galaxy A15 5G','Galaxy A15','Galaxy A05s','Galaxy A05',
+    'Galaxy M55 5G','Galaxy M54 5G','Galaxy M34 5G','Galaxy M14 5G','Galaxy M14',
+    'Galaxy F55 5G','Galaxy F34 5G','Galaxy F14 5G',
+    'Galaxy Z Fold 5','Galaxy Z Fold 4','Galaxy Z Flip 5','Galaxy Z Flip 4',
+    'Galaxy Tab S9 Ultra','Galaxy Tab S9+','Galaxy Tab S9','Galaxy Tab A9+'
+  ],
+  'OPPO':[
+    'Find X7 Ultra','Find X7','Find X6 Pro','Find X6','Find X5 Pro','Find X5',
+    'Reno 12 Pro','Reno 12','Reno 11 Pro','Reno 11','Reno 10 Pro+','Reno 10 Pro','Reno 10',
+    'Reno 8T','Reno 8 Pro','Reno 8',
+    'A3 Pro','A98','A78','A77s','A58','A57','A38','A18','A17k','A16',
+    'F25 Pro','F23 Pro','F21 Pro','F19 Pro+',
+    'Pad 2','Pad Air'
+  ],
+  'Xiaomi':[
+    'Xiaomi 14 Ultra','Xiaomi 14 Pro','Xiaomi 14','Xiaomi 13T Pro','Xiaomi 13T',
+    'Xiaomi 13 Pro','Xiaomi 13','Xiaomi 12 Pro','Xiaomi 12','Xiaomi 11T Pro','Xiaomi 11T',
+    'Xiaomi Pad 6 Pro','Xiaomi Pad 6'
+  ],
+  'Mi':[
+    'Mi 11 Ultra','Mi 11 Pro','Mi 11','Mi 11X Pro','Mi 11X',
+    'Mi 10T Pro','Mi 10T','Mi 10 Pro','Mi 10',
+    'Mi 9T Pro','Mi 9T','Mi 9 SE','Mi 9',
+    'Mi A3','Mi A2 Lite','Mi A2',
+    'Mi Mix 4','Mi Mix Fold 2'
+  ],
+  'POCO':[
+    'POCO F6 Pro','POCO F6','POCO F5 Pro','POCO F5','POCO F4 GT','POCO F4','POCO F3',
+    'POCO X6 Pro','POCO X6','POCO X5 Pro','POCO X5','POCO X4 Pro 5G','POCO X4 GT',
+    'POCO M6 Pro','POCO M6','POCO M5s','POCO M5','POCO M4 Pro','POCO M4',
+    'POCO C65','POCO C55','POCO C51'
+  ],
+  'Redmi':[
+    'Redmi Note 13 Pro+ 5G','Redmi Note 13 Pro 5G','Redmi Note 13 Pro','Redmi Note 13 5G','Redmi Note 13',
+    'Redmi Note 12 Pro+ 5G','Redmi Note 12 Pro 5G','Redmi Note 12 Pro','Redmi Note 12 5G','Redmi Note 12',
+    'Redmi Note 11 Pro+ 5G','Redmi Note 11 Pro 5G','Redmi Note 11 Pro','Redmi Note 11',
+    'Redmi 13C 5G','Redmi 13C','Redmi 12 5G','Redmi 12','Redmi 12C',
+    'Redmi A3','Redmi A2+','Redmi A2','Redmi A1+','Redmi A1',
+    'Redmi 10C','Redmi 10A','Redmi 10 5G','Redmi 10'
+  ],
+  'Motorola':[
+    'Edge 50 Ultra','Edge 50 Pro','Edge 50 Fusion','Edge 50 Neo',
+    'Edge 40 Pro','Edge 40','Edge 40 Neo',
+    'Edge 30 Ultra','Edge 30 Pro','Edge 30 Fusion','Edge 30 Neo',
+    'Moto G85 5G','Moto G84 5G','Moto G64 5G','Moto G54 5G','Moto G34 5G','Moto G24 Power','Moto G24','Moto G14','Moto G13','Moto G04',
+    'Moto E14','Moto E13',
+    'Razr 50 Ultra','Razr 50','Razr 40 Ultra','Razr 40'
+  ],
+  'Huawei':[
+    'Mate 60 Pro+','Mate 60 Pro','Mate 60','Mate 50 Pro','Mate 50',
+    'P60 Pro','P60 Art','P60','P50 Pro','P50 Pocket',
+    'nova 12 Ultra','nova 12 Pro','nova 12','nova 11 Ultra','nova 11 Pro','nova 11',
+    'Y9s','Y7a','Y6p','Y5p',
+    'MatePad Pro 13.2','MatePad 11.5','MatePad 10.4'
+  ],
+  'Honor':[
+    'Honor Magic 6 Pro','Honor Magic 6','Honor Magic 5 Pro','Honor Magic 5 Lite',
+    'Honor X9b','Honor X9a','Honor X8b','Honor X8a','Honor X7b','Honor X7a','Honor X6a',
+    '90 Pro','90','90 Lite','80 Pro','80','70 Pro','70',
+    'Honor Pad X9','Honor Pad 9'
+  ],
+  'OnePlus':[
+    'OnePlus 12R','OnePlus 12','OnePlus 11R','OnePlus 11','OnePlus 10T','OnePlus 10 Pro',
+    'OnePlus Nord 3','OnePlus Nord CE 3 Lite','OnePlus Nord CE 3','OnePlus Nord CE 2',
+    'OnePlus Nord N30','OnePlus Nord N20 SE',
+    'OnePlus Ace 3 Pro','OnePlus Ace 3','OnePlus Ace 2 Pro','OnePlus Ace 2',
+    'OnePlus Open'
+  ],
+  'Nokia':[
+    'Nokia X30 5G','Nokia X20','Nokia X10',
+    'Nokia G42 5G','Nokia G22','Nokia G21','Nokia G20','Nokia G11',
+    'Nokia C32','Nokia C22','Nokia C12','Nokia C02',
+    'Nokia 5710 XpressAudio','Nokia 3310 4G',
+    'Nokia T21','Nokia T20'
+  ],
+  'Realme':[
+    'Realme GT 6T','Realme GT 6','Realme GT 5 Pro','Realme GT 5','Realme GT Neo 6',
+    'Realme 12 Pro+ 5G','Realme 12 Pro 5G','Realme 12+ 5G','Realme 12 5G','Realme 12',
+    'Realme 11 Pro+ 5G','Realme 11 Pro 5G','Realme 11 5G','Realme 11',
+    'Realme Narzo 70 Pro 5G','Realme Narzo 70 5G','Realme Narzo 60 Pro 5G','Realme Narzo 60',
+    'Realme C67 5G','Realme C67','Realme C65','Realme C55','Realme C53','Realme C51','Realme C35',
+    'Realme Pad X','Realme Pad 2'
+  ],
+  'Vivo':[
+    'Vivo X100 Ultra','Vivo X100 Pro','Vivo X100','Vivo X90 Pro','Vivo X90',
+    'Vivo V30 Pro','Vivo V30','Vivo V29 Pro','Vivo V29','Vivo V27 Pro','Vivo V27',
+    'Vivo Y200 Pro 5G','Vivo Y200 5G','Vivo Y100 5G','Vivo Y100','Vivo Y78 5G','Vivo Y56 5G',
+    'Vivo Y27s','Vivo Y27','Vivo Y22s','Vivo Y16','Vivo Y15s',
+    'Vivo Pad 3 Pro','Vivo Pad 2'
+  ],
+  'iQOO':[
+    'iQOO 12 Pro','iQOO 12','iQOO 11 Pro','iQOO 11',
+    'iQOO Neo 9 Pro','iQOO Neo 9','iQOO Neo 8 Pro','iQOO Neo 8',
+    'iQOO Z9 Pro 5G','iQOO Z9 5G','iQOO Z9 Turbo',
+    'iQOO Z8 Pro','iQOO Z8','iQOO Z7 Pro 5G','iQOO Z7 5G'
+  ],
+  'Google':[
+    'Pixel 9 Pro XL','Pixel 9 Pro','Pixel 9','Pixel 9 Pro Fold',
+    'Pixel 8 Pro','Pixel 8','Pixel 8a','Pixel 8 Fold',
+    'Pixel 7 Pro','Pixel 7','Pixel 7a','Pixel 7 Fold',
+    'Pixel 6 Pro','Pixel 6','Pixel 6a',
+    'Pixel 5a','Pixel 4a 5G'
+  ],
+  'Sony':[
+    'Xperia 1 VI','Xperia 1 V','Xperia 1 IV',
+    'Xperia 5 VI','Xperia 5 V','Xperia 5 IV',
+    'Xperia 10 VI','Xperia 10 V','Xperia 10 IV',
+    'Xperia PRO-I','Xperia PRO'
+  ],
+  'LG':[
+    'LG V60 ThinQ 5G','LG V50S ThinQ','LG V50 ThinQ',
+    'LG Velvet 5G','LG Velvet',
+    'LG G8X ThinQ','LG G8 ThinQ',
+    'LG K92 5G','LG K62','LG K52','LG K42','LG K22',
+    'LG W41 Pro','LG W41','LG W31'
+  ],
+  'Asus':[
+    'ROG Phone 8 Pro','ROG Phone 8','ROG Phone 7 Ultimate','ROG Phone 7','ROG Phone 6 Pro',
+    'Zenfone 11 Ultra','Zenfone 10','Zenfone 9','Zenfone 8',
+    'Asus Vivobook 13 Slate'
+  ],
+  'ZTE':[
+    'ZTE Axon 60 Ultra','ZTE Axon 50 Ultra','ZTE Axon 40 Ultra',
+    'ZTE Blade V50 Design','ZTE Blade V40 Pro','ZTE Blade V40','ZTE Blade A73',
+    'ZTE Nubia Z60 Ultra','ZTE Nubia Z50 Ultra','ZTE Nubia Red Magic 9 Pro'
+  ],
+  'Infinix':[
+    'Infinix Note 40 Pro+ 5G','Infinix Note 40 Pro 5G','Infinix Note 40 5G','Infinix Note 40',
+    'Infinix Note 30 Pro','Infinix Note 30 5G','Infinix Note 30',
+    'Infinix Hot 40 Pro','Infinix Hot 40','Infinix Hot 30 5G','Infinix Hot 30','Infinix Hot 20',
+    'Infinix Smart 8 Plus','Infinix Smart 8','Infinix Smart 7',
+    'Infinix Zero 30 5G','Infinix Zero 30','Infinix Zero 20'
+  ],
+  'Tecno':[
+    'Tecno Phantom V Fold 2','Tecno Phantom V Flip','Tecno Phantom X2 Pro','Tecno Phantom X2',
+    'Tecno Camon 30 Pro 5G','Tecno Camon 30 5G','Tecno Camon 30','Tecno Camon 20 Premier',
+    'Tecno Spark 20 Pro+','Tecno Spark 20 Pro','Tecno Spark 20','Tecno Spark 10 Pro',
+    'Tecno Pova 6 Pro 5G','Tecno Pova 6 Neo','Tecno Pova 5 Pro 5G',
+    'Tecno Pop 8','Tecno Pop 7 Pro'
+  ],
+  'Itel':[
+    'Itel S24','Itel S23+','Itel S23',
+    'Itel A70','Itel A60s','Itel A60','Itel A58',
+    'Itel P55 5G','Itel P55+','Itel P55','Itel P40+','Itel P40',
+    'Itel Vision 3 Turbo','Itel Vision 3 Plus','Itel Vision 3'
+  ],
+  'Other':[
+    'Other Android Device','Custom Android ROM','Industrial Android Device',
+    'Rugged Android Device','Android Tablet','POS Android Terminal',
+    'Barcode Scanner Android','Android Kiosk Device'
+  ]
 };
 function updateModels(){
   const br=document.getElementById('afbrand').value;
-  const ms=BMODELS[br]||['Other'];
+  const ms=BMODELS[br]||['Other Android Device'];
   const sel=document.getElementById('afmodel');
   sel.innerHTML=ms.map(m=>`<option>${m}</option>`).join('');
+  // auto-set OS to Android
+  const osSel=document.getElementById('afos');
+  if(osSel){
+    osSel.value='Android 14';
+    if(!osSel.value)osSel.selectedIndex=0;
+  }
+  // update model count label
+  const lbl=document.getElementById('model-count-lbl');
+  if(lbl)lbl.textContent=`${ms.length} models`;
 }
 updateModels();
 
-// ── Device Data
-const ZONES=['Zone A – HQ','Zone B – Field','Zone C – Warehouse','Zone D – Remote'];
-const OSS=['iOS 17.4','iOS 17.3','iOS 16.7','Android 14','Android 13','Android 12'];
-const DESGS=['IT','Driver','Sales','Finance','E-Commerce','Procurement','Marketing','HR','Operations','Logistics','Security','Management','Customer Service','Technician','Field Agent'];
-const BRANDS=Object.keys(BMODELS);
+// ══════════════════════════════════════════════
+// SUPABASE CONNECTION — AL ANEES MDM
+// ══════════════════════════════════════════════
+const SUPA_URL = 'https://lriygbvozcorlzuvdhyg.supabase.co';
+const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxyaXlnYnZvemNvcmx6dXZkaHlnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA4MjcyODcsImV4cCI6MjA5NjQwMzI4N30.pgi_DoQxxvtm_t0Deet5a7acqZtxZRM6xeyXcZO6Tz8';
+const sb = window.supabase.createClient(SUPA_URL, SUPA_KEY);
+
+// ── State
+let devices = [];
+let filteredDevices = [];
+let activeFilter = { search:'', status:'', designation:'' };
+let selectedDevice = null;
+let realtimeChannel = null;
+let cmdPollInterval = null;
+
+// ── Helpers
+const SC  = {online:'var(--ok)', offline:'var(--er)', warning:'var(--wn)'};
+const SCLS= {online:'s-on', offline:'s-off', warning:'s-wn'};
+function pad3(n){return String(n).padStart(3,'0')}
 function rnd(a){return a[Math.floor(Math.random()*a.length)]}
 function ri(a,b){return a+Math.floor(Math.random()*(b-a+1))}
-function pad3(n){return String(n).padStart(3,'0')}
-const STS=['online','online','online','online','online','online','online','online','offline','warning'];
+function mapX(d,W){return d.map_x||Math.min(35+Math.random()*Math.max(W-70,1),W-10)}
+function mapY(d,H){return d.map_y||Math.min(20+Math.random()*Math.max(H-40,1),H-10)}
+function timeAgo(ts){
+  if(!ts)return 'Never';
+  const s=Math.floor((Date.now()-new Date(ts))/1000);
+  if(s<60)return s+'s ago';
+  if(s<3600)return Math.floor(s/60)+'m ago';
+  if(s<86400)return Math.floor(s/3600)+'h ago';
+  return Math.floor(s/86400)+'d ago';
+}
 
-let devices=Array.from({length:30},(_,i)=>{
-  const br=rnd(BRANDS);const mo=rnd(BMODELS[br]);
+// ── Normalize Supabase row → UI object
+function normalize(row){
   return{
-    id:`DEV-${pad3(i+1)}`,
-    name:`${rnd(['Field','Office','Ops','Tech','Sales'])} Unit ${i+1}`,
-    brand:br,model:mo,
-    status:i===6?'offline':i===11?'warning':i===22?'warning':rnd(STS),
-    battery:i===11?8:ri(10,99),
-    os:br==='Apple'?rnd(['iOS 17.4','iOS 17.3','iOS 16.7']):rnd(['Android 14','Android 13','Android 12']),
-    zone:rnd(ZONES),designation:rnd(DESGS),
-    coords:`${(25.2048+Math.random()*.08).toFixed(4)}°N, ${(55.2708+Math.random()*.12).toFixed(4)}°E`,
-    serial:`SN${Math.random().toString(36).substr(2,8).toUpperCase()}`,
-    enrolled:`${ri(1,12)} months ago`,enrolledVia:'Manual',
-    lastSeen:i===6?'2h ago':`${ri(1,9)}m ago`,
-    employee:'',
-    x:35+Math.random()*625,y:35+Math.random()*305,
-    mx:25+Math.random()*350,my:20+Math.random()*140,
+    id:          row.device_id || row.id,
+    dbId:        row.id,
+    name:        row.name        || 'Unnamed Device',
+    brand:       row.brand       || 'Unknown',
+    model:       row.model       || 'Unknown',
+    os:          row.os_version  || 'Android',
+    designation: row.designation || '—',
+    zone:        row.zone        || 'Zone A – HQ',
+    serial:      row.serial      || '—',
+    employee:    row.employee    || '',
+    status:      row.status      || 'offline',
+    battery:     parseInt(row.battery)||0,
+    lastSeen:    timeAgo(row.last_seen),
+    enrolled:    row.enrolled_at ? new Date(row.enrolled_at).toLocaleDateString() : '—',
+    enrolledVia: row.enrolled_via||'Manual',
+    lat:         row.lat         || null,
+    lng:         row.lng         || null,
+    coords:      (row.lat&&row.lng) ? `${parseFloat(row.lat).toFixed(4)}°N, ${parseFloat(row.lng).toFixed(4)}°E` : 'Location pending',
+    x:           row.map_x       || (35+Math.random()*625),
+    y:           row.map_y       || (35+Math.random()*305),
+    mx:          (row.map_x||0)*0.57 || (25+Math.random()*350),
+    my:          (row.map_y||0)*0.47 || (20+Math.random()*140),
   };
-});
+}
 
-const SC={online:'var(--ok)',offline:'var(--er)',warning:'var(--wn)'};
-const SCLS={online:'s-on',offline:'s-off',warning:'s-wn'};
-const BICO={Apple:'🍎',Samsung:'📱',OPPO:'📱',Xiaomi:'📱',Motorola:'📱',Huawei:'📱',OnePlus:'📱',Nokia:'📱',Realme:'📱',Vivo:'📱',Google:'📱',Other:'📱'};
+// ══════════════════════════════════════════════
+// FETCH DEVICES FROM SUPABASE
+// ══════════════════════════════════════════════
+async function loadDevices(){
+  setLoading(true);
+  try{
+    const {data,error}=await sb.from('devices').select('*').order('enrolled_at',{ascending:false});
+    if(error)throw error;
+    devices = (data||[]).map(normalize);
+    applyFilters();
+    updateCounts();
+    mkMap('minimap',true,400,180);
+    setLoading(false);
+    // Load latest location for each device
+    loadLocations();
+  }catch(e){
+    setLoading(false);
+    showDBError('Could not load devices: '+e.message);
+  }
+}
+
+async function loadLocations(){
+  try{
+    // Get latest location per device
+    const {data}=await sb.from('device_location')
+      .select('device_id, latitude, longitude, recorded_at')
+      .order('recorded_at',{ascending:false})
+      .limit(200);
+    if(!data)return;
+    const seen=new Set();
+    data.forEach(loc=>{
+      if(seen.has(loc.device_id))return;
+      seen.add(loc.device_id);
+      const dev=devices.find(d=>d.id===loc.device_id);
+      if(dev){
+        dev.lat=loc.latitude; dev.lng=loc.longitude;
+        dev.coords=`${parseFloat(loc.latitude).toFixed(4)}°N, ${parseFloat(loc.longitude).toFixed(4)}°E`;
+        // map position scaled to SVG viewbox
+        dev.x = 35+((parseFloat(loc.longitude)-55.2)/(55.6-55.2))*620;
+        dev.y = 35+((25.35-parseFloat(loc.latitude))/(25.35-25.1))*280;
+        dev.mx= dev.x*0.57; dev.my=dev.y*0.47;
+      }
+    });
+    mkMap('minimap',true,400,180);
+  }catch(e){console.warn('Location load error',e.message)}
+}
+
+// ══════════════════════════════════════════════
+// REALTIME — live updates from Supabase
+// ══════════════════════════════════════════════
+function startRealtime(){
+  if(realtimeChannel)sb.removeChannel(realtimeChannel);
+  realtimeChannel = sb.channel('devices-live')
+    .on('postgres_changes',{event:'INSERT',schema:'public',table:'devices'},payload=>{
+      const dev=normalize(payload.new);
+      devices.unshift(dev);
+      applyFilters(); updateCounts(); mkMap('minimap',true,400,180);
+      toast(`📲 New device enrolled: ${dev.name}`);
+      addAlert('info','📲',`New device enrolled: ${dev.name}`,dev.brand+' '+dev.model+' · just now');
+    })
+    .on('postgres_changes',{event:'UPDATE',schema:'public',table:'devices'},payload=>{
+      const updated=normalize(payload.new);
+      const idx=devices.findIndex(d=>d.id===updated.id);
+      if(idx>=0){
+        const old=devices[idx];
+        devices[idx]=updated;
+        // alert on status change
+        if(old.status!==updated.status){
+          if(updated.status==='offline') addAlert('err','❌',`${updated.name} went offline`,updated.id+' · just now');
+          if(updated.status==='online')  addAlert('info','✅',`${updated.name} is back online`,updated.id+' · just now');
+        }
+        // alert on low battery
+        if(updated.battery<=15&&old.battery>15) addAlert('warn','🔋',`Low battery: ${updated.name} (${updated.battery}%)`,updated.id+' · just now');
+        // refresh detail panel if open
+        if(selectedDevice&&selectedDevice.id===updated.id) openDP(updated);
+      }
+      applyFilters(); updateCounts(); mkMap('minimap',true,400,180);
+    })
+    .on('postgres_changes',{event:'INSERT',schema:'public',table:'device_location'},payload=>{
+      const loc=payload.new;
+      const dev=devices.find(d=>d.id===loc.device_id);
+      if(dev){
+        dev.lat=loc.latitude; dev.lng=loc.longitude;
+        dev.coords=`${parseFloat(loc.latitude).toFixed(4)}°N, ${parseFloat(loc.longitude).toFixed(4)}°E`;
+        dev.x=35+((parseFloat(loc.longitude)-55.2)/(55.6-55.2))*620;
+        dev.y=35+((25.35-parseFloat(loc.latitude))/(25.35-25.1))*280;
+        dev.mx=dev.x*0.57; dev.my=dev.y*0.47;
+        if(selectedDevice&&selectedDevice.id===dev.id) openDP(dev);
+        mkMap('minimap',true,400,180);
+      }
+    })
+    .on('postgres_changes',{event:'UPDATE',schema:'public',table:'commands'},payload=>{
+      const cmd=payload.new;
+      if(cmd.status==='executed'){
+        toast(`✅ Command "${cmd.command}" executed on ${cmd.device_id}`);
+      }else if(cmd.status==='failed'){
+        toast(`❌ Command "${cmd.command}" failed on ${cmd.device_id}`);
+      }
+    })
+    .subscribe(status=>{
+      const dot=document.querySelector('.atb .dot');
+      if(dot) dot.style.background = status==='SUBSCRIBED'?'var(--ok)':'var(--wn)';
+    });
+}
+
+function stopRealtime(){
+  if(realtimeChannel){sb.removeChannel(realtimeChannel);realtimeChannel=null;}
+}
+
+// ══════════════════════════════════════════════
+// SEND COMMAND TO DEVICE
+// ══════════════════════════════════════════════
+async function sendCommand(deviceId, command, payload={}){
+  try{
+    const{error}=await sb.from('commands').insert({
+      device_id: deviceId,
+      command:   command,
+      payload:   payload,
+      status:    'pending',
+      created_at: new Date().toISOString()
+    });
+    if(error)throw error;
+    toast(`📤 "${command}" command sent to ${deviceId}`);
+    // Log it in alerts
+    addAlert('info','📤',`Command sent: ${command} → ${deviceId}`,'Waiting for device response...');
+  }catch(e){
+    toast(`❌ Failed to send command: ${e.message}`);
+  }
+}
+
+// Lock all devices
+async function lockAllDevices(){
+  const online=devices.filter(d=>d.status==='online');
+  if(online.length===0){toast('No online devices to lock');return}
+  for(const d of online){
+    await sb.from('commands').insert({device_id:d.id,command:'lock',status:'pending',created_at:new Date().toISOString()});
+  }
+  toast(`🔒 Lock command sent to ${online.length} devices`);
+}
+
+// ══════════════════════════════════════════════
+// FILTERS & LIST
+// ══════════════════════════════════════════════
+function applyFilters(){
+  let list=[...devices];
+  if(activeFilter.search){
+    const q=activeFilter.search.toLowerCase();
+    list=list.filter(d=>d.name.toLowerCase().includes(q)||d.id.toLowerCase().includes(q)||d.brand.toLowerCase().includes(q)||d.model.toLowerCase().includes(q)||d.employee.toLowerCase().includes(q));
+  }
+  if(activeFilter.status)  list=list.filter(d=>d.status===activeFilter.status);
+  if(activeFilter.designation) list=list.filter(d=>d.designation===activeFilter.designation);
+  filteredDevices=list;
+  buildList('ovlist',filteredDevices.slice(0,8));
+  buildList('fulllist',filteredDevices);
+}
+function filterDevs(q){activeFilter.search=q;applyFilters()}
+function filterSt(s){activeFilter.status=s;applyFilters()}
+function filterDesg(s){activeFilter.designation=s;applyFilters()}
 
 function mkRow(d,container){
   const r=document.createElement('div');r.className='dr';
-  r.innerHTML=`<div class="di">${BICO[d.brand]||'📱'}</div><div class="dninf"><div class="dname">${d.name} ${d.employee?'— '+d.employee:''}</div><div class="dmeta">${d.id} · ${d.brand} ${d.model} · <b>${d.designation}</b></div></div><div class="sdot ${SCLS[d.status]}"></div><div class="dbatt">🔋${d.battery}%</div>`;
-  r.onclick=()=>openDP(d);container.appendChild(r);
+  const batt=d.battery;
+  const battCol=batt<=15?'var(--er)':batt<=40?'var(--wn)':'var(--ok)';
+  r.innerHTML=`
+    <div class="di">📱</div>
+    <div class="dninf">
+      <div class="dname">${d.name}${d.employee?' <span style="font-weight:400;color:var(--tm)">— '+d.employee+'</span>':''}</div>
+      <div class="dmeta">${d.id} · ${d.brand} ${d.model} · <b>${d.designation}</b> · ${d.zone}</div>
+    </div>
+    <div class="sdot ${SCLS[d.status]}" title="${d.status}"></div>
+    <div class="dbatt" style="color:${battCol}">🔋${batt}%</div>`;
+  r.onclick=()=>openDP(d);
+  container.appendChild(r);
 }
-function buildList(id,list){const c=document.getElementById(id);if(!c)return;c.innerHTML='';list.forEach(d=>mkRow(d,c))}
-function refreshLists(){buildList('ovlist',devices.slice(0,8));buildList('fulllist',devices)}
+function buildList(id,list){
+  const c=document.getElementById(id);if(!c)return;c.innerHTML='';
+  if(list.length===0){
+    c.innerHTML='<div style="padding:24px;text-align:center;color:var(--tm);font-size:13px">No devices found</div>';
+    return;
+  }
+  list.forEach(d=>mkRow(d,c));
+}
+
 function updateCounts(){
-  const on=devices.filter(d=>d.status==='online').length;
-  const off=devices.filter(d=>d.status==='offline').length;
-  ['son'].forEach(id=>{const e=document.getElementById(id);if(e)e.textContent=on});
-  ['soff'].forEach(id=>{const e=document.getElementById(id);if(e)e.textContent=off});
-  ['stot'].forEach(id=>{const e=document.getElementById(id);if(e)e.textContent=devices.length});
-  const ae=document.getElementById('aonct');if(ae)ae.textContent=on;
-  const sb=document.getElementById('sbdct');if(sb)sb.textContent=devices.length;
-  const dl=document.getElementById('dctlbl');if(dl)dl.textContent=devices.length+' enrolled';
-  const cp=Math.round((devices.length-off)/devices.length*100);
-  const ce=document.getElementById('scomp');if(ce)ce.textContent=cp+'%';
-  const cs=document.getElementById('scoms');if(cs)cs.textContent=(devices.length-off)+'/'+devices.length;
+  const on  = devices.filter(d=>d.status==='online').length;
+  const off = devices.filter(d=>d.status==='offline').length;
+  const warn= devices.filter(d=>d.status==='warning').length;
+  const tot = devices.length;
+  const comp= tot>0?Math.round((tot-off)/tot*100):0;
+  const el=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v};
+  el('son',on); el('soff',off); el('stot',tot); el('aonct',on);
+  el('sbdct',tot); el('dctlbl',tot+' enrolled');
+  el('scomp',comp+'%'); el('scoms',(tot-off)+'/'+tot);
+  // update topbar online pill
+  const pill=document.querySelector('.abadge span');
+  if(pill)pill.textContent=on;
 }
-refreshLists();updateCounts();
 
-function filterDevs(q){buildList('fulllist',devices.filter(d=>d.name.toLowerCase().includes(q.toLowerCase())||d.id.toLowerCase().includes(q.toLowerCase())||d.brand.toLowerCase().includes(q.toLowerCase())||d.model.toLowerCase().includes(q.toLowerCase())))}
-function filterSt(s){buildList('fulllist',s?devices.filter(d=>d.status===s):devices)}
-function filterDesg(s){buildList('fulllist',s?devices.filter(d=>d.designation===s):devices)}
-
-// ── Maps
+// ══════════════════════════════════════════════
+// MAP
+// ══════════════════════════════════════════════
 function mkMap(svgId,mini,W,H){
   const svg=document.getElementById(svgId);if(!svg)return;svg.innerHTML='';
-  const defs=document.createElementNS('http://www.w3.org/2000/svg','defs');
-  const pat=document.createElementNS('http://www.w3.org/2000/svg','pattern');
+  const ns='http://www.w3.org/2000/svg';
+  const defs=document.createElementNS(ns,'defs');
+  const pat=document.createElementNS(ns,'pattern');
   pat.setAttribute('id','g'+svgId);pat.setAttribute('width','30');pat.setAttribute('height','30');pat.setAttribute('patternUnits','userSpaceOnUse');
   pat.innerHTML=`<path d="M30 0L0 0 0 30" fill="none" stroke="rgba(26,79,138,0.07)" stroke-width="1"/>`;
   defs.appendChild(pat);svg.appendChild(defs);
-  const bg=document.createElementNS('http://www.w3.org/2000/svg','rect');bg.setAttribute('width',W);bg.setAttribute('height',H);bg.setAttribute('fill',`url(#g${svgId})`);svg.appendChild(bg);
-  const zs=mini?[{x:18,y:10,w:110,h:70,l:'Zone A'},{x:160,y:10,w:80,h:56,l:'Zone B'},{x:18,y:100,w:80,h:58,l:'Zone C'},{x:150,y:95,w:100,h:62,l:'Zone D'}]:[{x:30,y:18,w:200,h:155,l:'Zone A – HQ'},{x:260,y:18,w:160,h:118,l:'Zone B – Field'},{x:30,y:200,w:148,h:140,l:'Zone C – Warehouse'},{x:310,y:198,w:190,h:150,l:'Zone D – Remote'}];
+  const bg=document.createElementNS(ns,'rect');bg.setAttribute('width',W);bg.setAttribute('height',H);bg.setAttribute('fill',`url(#g${svgId})`);svg.appendChild(bg);
+  const zs=mini
+    ?[{x:18,y:10,w:110,h:70,l:'Zone A'},{x:160,y:10,w:80,h:56,l:'Zone B'},{x:18,y:100,w:80,h:58,l:'Zone C'},{x:150,y:95,w:100,h:62,l:'Zone D'}]
+    :[{x:30,y:18,w:200,h:155,l:'Zone A – HQ'},{x:260,y:18,w:160,h:118,l:'Zone B – Field'},{x:30,y:200,w:148,h:140,l:'Zone C – Warehouse'},{x:310,y:198,w:190,h:150,l:'Zone D – Remote'}];
   zs.forEach(z=>{
-    const r=document.createElementNS('http://www.w3.org/2000/svg','rect');
+    const r=document.createElementNS(ns,'rect');
     r.setAttribute('x',z.x);r.setAttribute('y',z.y);r.setAttribute('width',z.w);r.setAttribute('height',z.h);
-    r.setAttribute('rx','6');r.setAttribute('fill','none');r.setAttribute('stroke','#1a4f8a');r.setAttribute('stroke-width','0.7');r.setAttribute('stroke-dasharray','5 3');r.setAttribute('opacity','0.2');svg.appendChild(r);
-    const t=document.createElementNS('http://www.w3.org/2000/svg','text');
+    r.setAttribute('rx','6');r.setAttribute('fill','none');r.setAttribute('stroke','#1a4f8a');
+    r.setAttribute('stroke-width','0.7');r.setAttribute('stroke-dasharray','5 3');r.setAttribute('opacity','0.2');svg.appendChild(r);
+    const t=document.createElementNS(ns,'text');
     t.setAttribute('x',z.x+5);t.setAttribute('y',z.y+12);t.setAttribute('font-size','8');t.setAttribute('fill','#1a4f8a');t.setAttribute('opacity','0.4');t.textContent=z.l;svg.appendChild(t);
   });
   devices.forEach(d=>{
-    const px=Math.min(mini?d.mx:d.x,W-10);const py=Math.min(mini?d.my:d.y,H-10);
+    const px=Math.min(Math.max(mini?d.mx:d.x,8),W-10);
+    const py=Math.min(Math.max(mini?d.my:d.y,8),H-10);
     const col=SC[d.status];
-    const g=document.createElementNS('http://www.w3.org/2000/svg','g');
+    const g=document.createElementNS(ns,'g');
     g.setAttribute('transform',`translate(${px},${py})`);g.style.cursor='pointer';
     if(d.status==='online'){
-      const p=document.createElementNS('http://www.w3.org/2000/svg','circle');p.setAttribute('r','5');p.setAttribute('fill',col);p.setAttribute('opacity','0');
-      const a1=document.createElementNS('http://www.w3.org/2000/svg','animate');a1.setAttribute('attributeName','opacity');a1.setAttribute('values','0.4;0');a1.setAttribute('dur','2.5s');a1.setAttribute('repeatCount','indefinite');
-      const a2=document.createElementNS('http://www.w3.org/2000/svg','animate');a2.setAttribute('attributeName','r');a2.setAttribute('values','4;14');a2.setAttribute('dur','2.5s');a2.setAttribute('repeatCount','indefinite');
+      const p=document.createElementNS(ns,'circle');p.setAttribute('r','5');p.setAttribute('fill',col);p.setAttribute('opacity','0');
+      const a1=document.createElementNS(ns,'animate');a1.setAttribute('attributeName','opacity');a1.setAttribute('values','0.4;0');a1.setAttribute('dur','2.5s');a1.setAttribute('repeatCount','indefinite');
+      const a2=document.createElementNS(ns,'animate');a2.setAttribute('attributeName','r');a2.setAttribute('values','4;14');a2.setAttribute('dur','2.5s');a2.setAttribute('repeatCount','indefinite');
       p.appendChild(a1);p.appendChild(a2);g.appendChild(p);
     }
-    const c=document.createElementNS('http://www.w3.org/2000/svg','circle');c.setAttribute('r','5');c.setAttribute('fill',col);c.setAttribute('stroke','white');c.setAttribute('stroke-width','1.5');c.setAttribute('opacity','0.92');
-    if(!mini){const lbl=document.createElementNS('http://www.w3.org/2000/svg','text');lbl.setAttribute('y','-8');lbl.setAttribute('font-size','7.5');lbl.setAttribute('fill','#0d1f35');lbl.setAttribute('text-anchor','middle');lbl.setAttribute('opacity','0.55');lbl.textContent=d.id;g.appendChild(lbl);}
+    const c=document.createElementNS(ns,'circle');c.setAttribute('r','5');c.setAttribute('fill',col);c.setAttribute('stroke','white');c.setAttribute('stroke-width','1.5');c.setAttribute('opacity','0.92');
+    if(!mini){
+      const lbl=document.createElementNS(ns,'text');lbl.setAttribute('y','-8');lbl.setAttribute('font-size','7.5');lbl.setAttribute('fill','#0d1f35');lbl.setAttribute('text-anchor','middle');lbl.setAttribute('opacity','0.55');lbl.textContent=d.id;g.appendChild(lbl);
+    }
     g.appendChild(c);g.addEventListener('click',()=>openDP(d));svg.appendChild(g);
   });
 }
 
-// ── Nav views
+// ══════════════════════════════════════════════
+// VIEWS
+// ══════════════════════════════════════════════
 function showV(v){
   document.querySelectorAll('.aview').forEach(e=>e.classList.remove('active'));
   document.querySelectorAll('.asbitem').forEach(e=>e.classList.remove('active'));
@@ -1003,29 +1380,66 @@ function showV(v){
   closeDP();
 }
 
-// ── Detail panel
+// ══════════════════════════════════════════════
+// DETAIL PANEL
+// ══════════════════════════════════════════════
 function openDP(d){
+  selectedDevice=d;
   document.getElementById('dp').classList.remove('hidden');
-  document.getElementById('dpnm').textContent=d.name+(d.employee?' — '+d.employee:'');
-  document.getElementById('dpdid').textContent=d.id;
+  const el=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v};
+  el('dpnm', d.name+(d.employee?' — '+d.employee:''));
+  el('dpdid', d.id);
   document.getElementById('dpst').innerHTML=`<span style="color:${SC[d.status]}">${d.status.charAt(0).toUpperCase()+d.status.slice(1)}</span>`;
-  document.getElementById('dpls').textContent=d.lastSeen;
-  document.getElementById('dpos').textContent=d.os;
-  document.getElementById('dpbt').textContent=d.battery+'%';
-  document.getElementById('dpzn').textContent=d.zone;
-  document.getElementById('dpco').textContent=d.coords;
-  document.getElementById('dpdesg').textContent=d.designation;
-  document.getElementById('dpenrv').textContent=d.enrolledVia||'Manual';
-  document.getElementById('dpbr').textContent=d.brand;
-  document.getElementById('dpmo').textContent=d.model;
-  document.getElementById('dpse').textContent=d.serial;
-  document.getElementById('dpen').textContent=d.enrolled;
+  el('dpls', d.lastSeen);
+  el('dpos', d.os);
+  el('dpbt', d.battery+'%');
+  el('dpzn', d.zone);
+  el('dpco', d.coords);
+  el('dpdesg', d.designation);
+  el('dpenrv', d.enrolledVia);
+  el('dpbr',  d.brand);
+  el('dpmo',  d.model);
+  el('dpse',  d.serial);
+  el('dpen',  d.enrolled);
   const bar=document.getElementById('dpbtb');
-  bar.style.width=d.battery+'%';bar.className='bfill '+(d.battery>50?'bhi':d.battery>20?'bmd':'blo');
+  bar.style.width=d.battery+'%';
+  bar.className='bfill '+(d.battery>50?'bhi':d.battery>20?'bmd':'blo');
+  // wire control buttons
+  document.getElementById('dp').querySelectorAll('.ctrlb').forEach(btn=>{
+    btn.onclick=null;
+  });
+  const cmdBtn=(cmd,label)=>{
+    const b=document.getElementById('dpbtn-'+cmd);
+    if(b) b.onclick=()=>sendCommand(d.id,cmd);
+  };
+  cmdBtn('lock','Lock');cmdBtn('wipe','Wipe');cmdBtn('ping','Ping');
+  cmdBtn('reboot','Reboot');cmdBtn('message','Message');cmdBtn('appsync','App Sync');
 }
-function closeDP(){document.getElementById('dp').classList.add('hidden')}
+function closeDP(){selectedDevice=null;document.getElementById('dp').classList.add('hidden')}
 
-// ── Add Device Modal
+// ══════════════════════════════════════════════
+// ALERTS
+// ══════════════════════════════════════════════
+const alertsList=[];
+function addAlert(type,icon,title,meta){
+  alertsList.unshift({type,icon,title,meta});
+  if(alertsList.length>20)alertsList.pop();
+  renderAlerts();
+}
+function renderAlerts(){
+  const c=document.getElementById('alerts-body');if(!c)return;
+  c.innerHTML='';
+  alertsList.forEach(a=>{
+    const el=document.createElement('div');
+    el.className=`aal ${a.type}`;
+    el.innerHTML=`<span class="aai">${a.icon}</span><div><div class="alt">${a.title}</div><div class="alm">${a.meta}</div></div>`;
+    c.appendChild(el);
+  });
+}
+
+// ══════════════════════════════════════════════
+// ADD DEVICE (MANUAL) → SAVES TO SUPABASE
+// ══════════════════════════════════════════════
 let currentEnrollTab='manual';
 function openAddDev(tab){
   document.getElementById('addModal').classList.add('open');
@@ -1046,33 +1460,50 @@ function switchEnrollTab(t){
   document.getElementById('panel-qr').classList.toggle('active',t==='qr');
 }
 
-// ── Manual submit
-function submitDev(){
-  const name=document.getElementById('afname').value.trim();
-  const serial=document.getElementById('afserial').value.trim();
-  if(!name){document.getElementById('amerr').textContent='Device name is required.';return}
-  if(!serial){document.getElementById('amerr').textContent='Serial number is required.';return}
-  const num=devices.length+1;
-  const br=document.getElementById('afbrand').value;
-  devices.push({
-    id:`DEV-${pad3(num)}`,name,brand:br,
-    model:document.getElementById('afmodel').value,
-    os:document.getElementById('afos').value,
-    zone:document.getElementById('afzone').value,
-    designation:document.getElementById('afdesg').value,
-    employee:document.getElementById('afemp').value.trim(),
-    serial,status:'online',battery:ri(60,99),
-    coords:`${(25.2048+Math.random()*.08).toFixed(4)}°N, ${(55.2708+Math.random()*.12).toFixed(4)}°E`,
-    lastSeen:'just now',enrolled:'just now',enrolledVia:'Manual',
-    x:35+Math.random()*625,y:35+Math.random()*305,
-    mx:25+Math.random()*350,my:20+Math.random()*140,
-  });
-  closeAddDev();refreshLists();updateCounts();
-  setTimeout(()=>mkMap('minimap',true,400,180),100);
-  toast(`✅ "${name}" enrolled successfully`);showV('devs');
+async function submitDev(){
+  const name   = document.getElementById('afname').value.trim();
+  const serial = document.getElementById('afserial').value.trim();
+  const errEl  = document.getElementById('amerr');
+  if(!name)  {errEl.textContent='Device name is required.';return}
+  if(!serial){errEl.textContent='Serial number is required.';return}
+  errEl.textContent='Saving to database...';
+
+  const num = devices.length+1;
+  const devId = `DEV-${pad3(num)}`;
+  const row={
+    device_id:    devId,
+    name:         name,
+    brand:        document.getElementById('afbrand').value,
+    model:        document.getElementById('afmodel').value,
+    os_version:   document.getElementById('afos').value,
+    zone:         document.getElementById('afzone').value,
+    designation:  document.getElementById('afdesg').value,
+    employee:     document.getElementById('afemp').value.trim(),
+    serial:       serial,
+    status:       'online',
+    battery:      100,
+    enrolled_via: 'Manual',
+    enrolled_at:  new Date().toISOString(),
+    last_seen:    new Date().toISOString(),
+  };
+
+  try{
+    const{data,error}=await sb.from('devices').insert(row).select().single();
+    if(error)throw error;
+    closeAddDev();
+    toast(`✅ "${name}" (${devId}) saved to database!`);
+    showV('devs');
+    // Realtime will pick it up — but also add locally for instant UI
+    devices.unshift(normalize(data||row));
+    applyFilters(); updateCounts(); mkMap('minimap',true,400,180);
+  }catch(e){
+    errEl.textContent='Error: '+e.message;
+  }
 }
 
-// ── QR Code Generation
+// ══════════════════════════════════════════════
+// QR ENROLLMENT → SAVES TO SUPABASE
+// ══════════════════════════════════════════════
 let qrGenerated=false;
 let pendingQRDevice=null;
 
@@ -1081,39 +1512,39 @@ function resetQR(){
   document.getElementById('qr-container').style.display='none';
   document.getElementById('qrstatus').classList.remove('show');
   document.getElementById('qrprog').classList.remove('show');
-  const simBtn=document.getElementById('simBtn');
-  if(simBtn){simBtn.disabled=false;simBtn.textContent='📱 Simulate Device Scan (Demo)'}
-  const qrDiv=document.getElementById('qrcode');
-  if(qrDiv)qrDiv.innerHTML='';
+  const sb2=document.getElementById('simBtn');
+  if(sb2){sb2.disabled=false;sb2.textContent='📱 Test QR Flow (Demo)';sb2.style.background=''}
+  const qrDiv=document.getElementById('qrcode');if(qrDiv)qrDiv.innerHTML='';
 }
 
 function genQR(){
-  const desg=document.getElementById('qrdesg').value;
-  const zone=document.getElementById('qrzone').value;
-  const emp=document.getElementById('qremp').value.trim();
-  const num=devices.length+1;
-  const eid='ENR-'+Date.now().toString(36).toUpperCase();
-  
+  const desg = document.getElementById('qrdesg').value;
+  const zone = document.getElementById('qrzone').value;
+  const emp  = document.getElementById('qremp').value.trim();
+  const eid  = 'ENR-'+Date.now().toString(36).toUpperCase();
+  const num  = devices.length+1;
+
   pendingQRDevice={
-    id:`DEV-${pad3(num)}`,
-    name:emp?emp+' Device':`${desg} Unit ${num}`,
-    brand:'Unknown',model:'Scanning...',
-    designation:desg,zone,employee:emp,
-    enrolledVia:'QR Code',eid
+    device_id:   `DEV-${pad3(num)}`,
+    name:        emp?emp+' Device':`${desg} Unit ${num}`,
+    designation: desg, zone, employee:emp,
+    enrolled_via:'QR Code', eid
   };
 
-  const enrollURL=`https://mdm.alanees.com/enroll?eid=${eid}&desg=${encodeURIComponent(desg)}&zone=${encodeURIComponent(zone)}&emp=${encodeURIComponent(emp||'Staff')}`;
-  
-  document.getElementById('qrurl').textContent=enrollURL;
-  const qrDiv=document.getElementById('qrcode');
-  qrDiv.innerHTML='';
-  
+  // QR URL points to your Supabase enrollment endpoint
+  const enrollURL=`${SUPA_URL}/rest/v1/rpc/enroll_device?eid=${eid}&desg=${encodeURIComponent(desg)}&zone=${encodeURIComponent(zone)}&emp=${encodeURIComponent(emp||'Staff')}`;
+  document.getElementById('qrurl').textContent=`https://lriygbvozcorlzuvdhyg.supabase.co/enroll?id=${eid}`;
+
+  const qrDiv=document.getElementById('qrcode');qrDiv.innerHTML='';
   try{
-    new QRCode(qrDiv,{text:enrollURL,width:160,height:160,colorDark:'#1a4f8a',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.M});
+    new QRCode(qrDiv,{
+      text:`https://lriygbvozcorlzuvdhyg.supabase.co/enroll?eid=${eid}&desg=${encodeURIComponent(desg)}&zone=${encodeURIComponent(zone)}&emp=${encodeURIComponent(emp||'Staff')}`,
+      width:160,height:160,colorDark:'#1a4f8a',colorLight:'#ffffff',
+      correctLevel:QRCode.CorrectLevel.M
+    });
   }catch(e){
-    qrDiv.innerHTML=`<div style="width:160px;height:160px;background:var(--ow);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px"><div style="font-size:32px">📲</div><div style="font-size:11px;color:var(--tm);text-align:center">QR Code<br>${eid}</div></div>`;
+    qrDiv.innerHTML=`<div style="width:160px;height:160px;background:var(--ow);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;font-size:11px;color:var(--tm);text-align:center"><div style="font-size:32px">📲</div>QR Code<br><b>${eid}</b></div>`;
   }
-  
   document.getElementById('qr-container').style.display='block';
   qrGenerated=true;
 }
@@ -1121,10 +1552,8 @@ function genQR(){
 let simInterval=null;
 function simulateScan(){
   if(!qrGenerated||!pendingQRDevice)return;
-  const simBtn=document.getElementById('simBtn');
-  simBtn.disabled=true;simBtn.textContent='📡 Waiting for device...';
-  
-  // Show the "device screen" simulation
+  const btn=document.getElementById('simBtn');
+  btn.disabled=true;btn.textContent='📡 Device connecting...';
   document.getElementById('qrp-desg').textContent=pendingQRDevice.designation;
   document.getElementById('qrp-zone').textContent=pendingQRDevice.zone;
   document.getElementById('qrp-emp').textContent=pendingQRDevice.employee||'—';
@@ -1132,86 +1561,170 @@ function simulateScan(){
   document.getElementById('qrpage').classList.add('open');
 }
 
-function confirmEnroll(){
+async function confirmEnroll(){
   document.getElementById('qrpage').classList.remove('open');
   if(!pendingQRDevice)return;
-
-  // Show progress in admin dashboard
   document.getElementById('qrprog').classList.add('show');
   const bar=document.getElementById('qrbar');
   let w=0;
-  simInterval=setInterval(()=>{
-    w+=2;bar.style.width=w+'%';
+  // animate progress then save to Supabase
+  const prog=setInterval(async()=>{
+    w+=3;bar.style.width=w+'%';
     if(w>=100){
-      clearInterval(simInterval);
-      // Pick a random brand/model for the "scanned" device
-      const br=rnd(['Apple','Samsung','OPPO','Xiaomi','Motorola']);
-      const mo=rnd(BMODELS[br]);
-      const finalDev={
-        ...pendingQRDevice,
-        brand:br,model:mo,
-        status:'online',battery:ri(70,99),
-        os:br==='Apple'?'iOS 17.4':'Android 14',
-        coords:`${(25.2048+Math.random()*.08).toFixed(4)}°N, ${(55.2708+Math.random()*.12).toFixed(4)}°E`,
-        lastSeen:'just now',enrolled:'just now',
-        serial:'SN'+Math.random().toString(36).substr(2,8).toUpperCase(),
-        x:35+Math.random()*625,y:35+Math.random()*305,
-        mx:25+Math.random()*350,my:20+Math.random()*140,
+      clearInterval(prog);
+      const brands=['Samsung','OPPO','Xiaomi','Redmi','Motorola','Realme','Vivo','OnePlus','Google'];
+      const br=rnd(brands);
+      const mo=rnd(BMODELS[br]||['Android Device']);
+      const row={
+        device_id:   pendingQRDevice.device_id,
+        name:        pendingQRDevice.name,
+        brand:       br,
+        model:       mo,
+        os_version:  rnd(['Android 14','Android 13','Android 12']),
+        zone:        pendingQRDevice.zone,
+        designation: pendingQRDevice.designation,
+        employee:    pendingQRDevice.employee||'',
+        serial:      'SN'+Math.random().toString(36).substr(2,8).toUpperCase(),
+        status:      'online',
+        battery:     ri(70,99),
+        enrolled_via:'QR Code',
+        enrolled_at: new Date().toISOString(),
+        last_seen:   new Date().toISOString(),
       };
-      devices.push(finalDev);
-      refreshLists();updateCounts();
-      setTimeout(()=>mkMap('minimap',true,400,180),100);
-      const st=document.getElementById('qrstatus');
-      st.classList.add('show');
-      st.innerHTML=`✅ <strong>${finalDev.name}</strong> (${finalDev.brand} ${finalDev.model}) successfully enrolled via QR! Device ID: <strong>${finalDev.id}</strong>`;
-      const sb=document.getElementById('simBtn');
-      if(sb){sb.textContent='✅ Device Enrolled!';sb.style.background='var(--ok)'}
-      toast(`📲 QR Enrolled: ${finalDev.name}`);
+      try{
+        const{data,error}=await sb.from('devices').insert(row).select().single();
+        if(error)throw error;
+        const st=document.getElementById('qrstatus');
+        st.classList.add('show');
+        st.innerHTML=`✅ <strong>${row.name}</strong> (${row.brand} ${row.model}) enrolled via QR and saved to database! ID: <strong>${row.device_id}</strong>`;
+        const btn=document.getElementById('simBtn');
+        if(btn){btn.textContent='✅ Enrolled!';btn.style.background='var(--ok)'}
+        toast(`📲 QR Enrolled: ${row.name} → Supabase`);
+        devices.unshift(normalize(data||row));
+        applyFilters();updateCounts();mkMap('minimap',true,400,180);
+      }catch(e){
+        const st=document.getElementById('qrstatus');
+        st.classList.add('show');
+        st.textContent='❌ Database error: '+e.message;
+        st.style.background='#fde8e8';st.style.color='var(--er)';
+        const btn=document.getElementById('simBtn');
+        if(btn){btn.disabled=false;btn.textContent='📱 Test QR Flow (Demo)';btn.style.background=''}
+      }
     }
-  },30);
+  },20);
 }
 
 function cancelQRPage(){
   document.getElementById('qrpage').classList.remove('open');
-  const sb=document.getElementById('simBtn');
-  if(sb){sb.disabled=false;sb.textContent='📱 Simulate Device Scan (Demo)'}
+  const btn=document.getElementById('simBtn');
+  if(btn){btn.disabled=false;btn.textContent='📱 Test QR Flow (Demo)';btn.style.background=''}
 }
 
-// ── Login
+// ══════════════════════════════════════════════
+// AUTH — checks Supabase admin_users table
+// ══════════════════════════════════════════════
 function openLogin(){document.getElementById('loginModal').classList.add('open')}
 function closeLogin(){document.getElementById('loginModal').classList.remove('open')}
 function togglePw(id){const i=document.getElementById(id);i.type=i.type==='password'?'text':'password'}
-function doLogin(){
+
+async function doLogin(){
   const u=document.getElementById('lu').value.trim();
   const p=document.getElementById('lp').value;
-  if(u==='IT ADMIN'&&p==='ITAdmin@92'){
+  const errEl=document.getElementById('lerr');
+  errEl.textContent='Signing in...';
+
+  try{
+    const{data,error}=await sb.from('admin_users')
+      .select('*').eq('username',u).eq('password',p).single();
+    if(error||!data){
+      errEl.textContent='Invalid username or password.';
+      document.getElementById('lp').value='';
+      setTimeout(()=>errEl.textContent='',3000);
+      return;
+    }
+    // Success
     closeLogin();
     document.getElementById('website').style.display='none';
     document.getElementById('app').classList.add('active');
-    setTimeout(()=>mkMap('minimap',true,400,180),200);
-  } else {
-    const e=document.getElementById('lerr');e.textContent='Invalid username or password.';
-    document.getElementById('lp').value='';
-    setTimeout(()=>e.textContent='',3000);
+    errEl.textContent='';
+    // Load real data
+    await loadDevices();
+    startRealtime();
+    // seed some alerts
+    addAlert('info','🔐','Admin logged in','IT Admin · just now');
+    addAlert('info','📡','Realtime connection active','Supabase live channel · just now');
+  }catch(e){
+    errEl.textContent='Connection error: '+e.message;
+    setTimeout(()=>errEl.textContent='',4000);
   }
 }
+
 function doLogout(){
+  stopRealtime();
+  devices=[];filteredDevices=[];selectedDevice=null;
   document.getElementById('app').classList.remove('active');
   document.getElementById('website').style.display='block';
-  document.getElementById('lu').value='';document.getElementById('lp').value='';
+  document.getElementById('lu').value='';
+  document.getElementById('lp').value='';
   showV('ov');window.scrollTo(0,0);
 }
+
 document.getElementById('lu').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('lp').focus()});
 document.getElementById('lp').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin()});
 document.getElementById('loginModal').addEventListener('click',function(e){if(e.target===this)closeLogin()});
 
-// ── Toast
+// ── Wire sidebar command buttons
+document.querySelector('.asbitem[onclick*="Lock sent"]')&&
+  (document.querySelector('.asbitem[onclick*="Lock sent"]').onclick=lockAllDevices);
+
+// ══════════════════════════════════════════════
+// CONTROL BUTTONS → send real commands
+// ══════════════════════════════════════════════
+// These are set dynamically when openDP is called per device
+// Global commands wired in sidebar:
+function lockAll(){lockAllDevices()}
+async function pushAppDeploy(){
+  const online=devices.filter(d=>d.status==='online');
+  for(const d of online){
+    await sb.from('commands').insert({device_id:d.id,command:'app_deploy',status:'pending',created_at:new Date().toISOString()});
+  }
+  toast(`📦 App deploy sent to ${online.length} online devices`);
+}
+async function syncPolicies(){
+  const online=devices.filter(d=>d.status==='online');
+  for(const d of online){
+    await sb.from('commands').insert({device_id:d.id,command:'policy_sync',status:'pending',created_at:new Date().toISOString()});
+  }
+  toast(`🛡️ Policy sync sent to ${online.length} devices`);
+}
+
+// ══════════════════════════════════════════════
+// LOADING & ERROR UI
+// ══════════════════════════════════════════════
+function setLoading(on){
+  let el=document.getElementById('loading-overlay');
+  if(on&&!el){
+    el=document.createElement('div');
+    el.id='loading-overlay';
+    el.style.cssText='position:fixed;inset:0;z-index:9999;background:rgba(255,255,255,.85);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:14px';
+    el.innerHTML=`<div style="width:40px;height:40px;border:3px solid var(--bp);border-top-color:var(--bm);border-radius:50%;animation:spin .8s linear infinite"></div><div style="font-size:14px;color:var(--bm);font-weight:600">Loading devices from Supabase...</div>`;
+    document.body.appendChild(el);
+  }else if(!on&&el){el.remove()}
+}
+function showDBError(msg){
+  toast('❌ '+msg);
+  console.error('[AL ANEES MDM]',msg);
+}
+
+// ══════════════════════════════════════════════
+// TOAST
+// ══════════════════════════════════════════════
 let tt;
 function toast(msg){
   const b=document.getElementById('tbar');
-  document.getElementById('tmsg').textContent=msg.replace(/^[✅📲⚠️\s]*/,'');
+  document.getElementById('tmsg').textContent=msg.replace(/^[✅📲⚠️📤❌🔒📦🛡️\s]*/,'');
   b.classList.add('show');clearTimeout(tt);
-  tt=setTimeout(()=>b.classList.remove('show'),2800);
+  tt=setTimeout(()=>b.classList.remove('show'),3000);
 }
 
 // ── Scroll reveal
